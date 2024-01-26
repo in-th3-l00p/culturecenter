@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { app, redis } from "./server";
 import bodyParser from "body-parser";
 import ChatRoomRouter from "./routes/rooms";
+import MessageRouter from "./routes/chat";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,6 +21,7 @@ redis.connect().then(() => {
 
 // routes
 app.use("/api/chat/rooms", ChatRoomRouter);
+app.use("/api/chat/messages", MessageRouter);
 
 // running
 mongoose.connect(process.env.MONGO_URL!)

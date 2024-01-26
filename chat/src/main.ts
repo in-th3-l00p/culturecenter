@@ -8,16 +8,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // listening
-redis.connect().then(() => {
-    console.log("✅ REDIS");
-    redis.subscribe("registered", (user) => {
-        console.log(user);
-    });
+// redis.connect().then(() => {
+//     console.log("✅ REDIS");
+//     redis.subscribe("registered", (user) => {
+//         console.log(user);
+//     });
 
-    redis.on("error", (err) => {
-        console.log("❌ REDIS: " + err);
-    });
-});
+//     redis.on("error", (err) => {
+//         console.log("❌ REDIS: " + err);
+//     });
+// });
 
 // routes
 app.use("/api/chat/rooms", ChatRoomRouter);

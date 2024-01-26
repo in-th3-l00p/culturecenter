@@ -5,7 +5,7 @@ services:
     build:
       context: ./users
       dockerfile: ./docker/Dockerfile
-    entrypoint: sh -c "./wait-for-it.sh -t 300 mysql:3306 && /usr/bin/composer install && php /usr/local/src/orders/artisan migrate --force && php-fpm"
+    entrypoint: sh -c "wait-for-it -t 300 mysql:3306 && /usr/bin/composer install && php /usr/local/src/users/artisan migrate --force && php-fpm"
     volumes:
       - ./users:/usr/local/src/users
     environment:
@@ -15,6 +15,8 @@ services:
       - DB_DATABASE=users
       - DB_USERNAME=root
       - DB_PASSWORD=root
+      - LOG_CHANNEL=stack
+      - LOG_LEVEL=debug
     depends_on:
       - mysql
 
@@ -29,13 +31,13 @@ services:
       - users
 
   mysql:
-    image: mysql
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "33060:3306"
     volumes:
       - mysql:/var/lib/mysql
-    ports:
-      - 33060:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
 
   redis:
     image: redis:alpine

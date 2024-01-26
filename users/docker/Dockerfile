@@ -3,6 +3,7 @@ WORKDIR /usr/local/src/users
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    wait-for-it \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
@@ -24,10 +25,9 @@ RUN pecl install redis
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 COPY . .
-RUN chmod +x ./wait-for-it.sh
 COPY ./docker/dev.ini /usr/local/etc/php/conf.d/dev.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install
-RUN chown -R www-data:www-data .
+RUN chown -R www-data:www-data /usr/local/src/users 
 USER root

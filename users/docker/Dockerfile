@@ -29,5 +29,5 @@ COPY ./docker/dev.ini /usr/local/etc/php/conf.d/dev.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install
-RUN chown -R www-data:www-data /usr/local/src/users 
+# RUN chown -R www-data:www-data /usr/local/src/users 
 USER root

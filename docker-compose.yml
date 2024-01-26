@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  proxy:
+    image: nginx:1.19-alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8000:80
+    depends_on:
+      - chat
+      - ai
+      - users-api
+
   chat:
     build:
       context: ./chat
@@ -26,6 +37,7 @@ services:
       - ./ai:/usr/local/src/ai
     ports:
       - 8002:5000 
+    entrypoint: sh -c "python3 /usr/local/src/ai/server.py"
 
   users:
     build:
